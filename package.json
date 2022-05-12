@@ -1,47 +1,29 @@
 {
-  "name": "@ntlab/sms-gateway",
-  "version": "1.0.4",
-  "description": "SMS Gateway",
-  "main": "app.js",
+  "name": "@ntlab/sms-gateway-prepaid",
+  "version": "2.0.0",
+  "description": "SMS Gateway Prepaid Plugin",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tohenk/node-sms-gateway.git"
+    "url": "https://github.com/tohenk/node-sms-gateway-prepaid.git"
   },
   "keywords": [
     "sms",
     "gateway",
-    "gsm"
+    "plugin",
+    "prepaid"
   ],
   "author": "Toha <tohenk@yahoo.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tohenk/node-sms-gateway/issues"
+    "url": "https://github.com/tohenk/node-sms-gateway-prepaid/issues"
   },
-  "homepage": "https://github.com/tohenk/node-sms-gateway#readme",
+  "homepage": "https://github.com/tohenk/node-sms-gateway-prepaid#readme",
   "dependencies": {
-    "@ntlab/express-middleware": "^1.1.0",
-    "@ntlab/ntjs": "^1.1.0",
-    "@ntlab/ntjs-assets": "^1.1.0",
-    "@ntlab/ntlib": "^1.0.1",
-    "debug": "^4.3.1",
-    "ejs": "^2.7.4",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
     "format-number": "^3.0.0",
-    "http-errors": "^1.8.0",
-    "ini": "^1.3.8",
-    "morgan": "^1.10.0",
-    "mysql2": "^2.2.5",
-    "sequelize": "^6.5.0",
-    "session-file-store": "^1.5.0",
-    "socket.io": "^4.0.0",
-    "socket.io-client": "^4.0.0"
-  },
-  "devDependencies": {},
-  "bin": {
-    "node-sms-gateway": "app.js"
+    "moment": "^2.29.3"
   }
 }

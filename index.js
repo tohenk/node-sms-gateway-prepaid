@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2020 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2022 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -38,6 +38,21 @@ class PrepaidPlugin {
     ACTIVITY_INBOX = 4;
     ACTIVITY_USSD = 5;
     ACTIVITY_CUSD = 6;
+
+    months = [
+        ['jan'],
+        ['feb', 'peb'],
+        ['mar'],
+        ['apr'],
+        ['mei', 'may'],
+        ['jun'],
+        ['jul'],
+        ['agu', 'aug'],
+        ['sep'],
+        ['okt', 'oct'],
+        ['nop', 'nov'],
+        ['des', 'dec'],
+    ]
 
     constructor(appterm) {
         this.name = 'prepaid';
@@ -85,14 +100,14 @@ class PrepaidPlugin {
     }
 
     writeData() {
-        fs.writeFile(this.datafile, JSON.stringify(this.data, null, 4), (err) => {
+        fs.writeFile(this.datafile, JSON.stringify(this.data, null, 4), err => {
             if (err) console.log(err);
         });
     }
 
     parse(queue, data) {
         const responses = typeof data.response == 'string' ? [data.response] : data.response;
-        responses.forEach((pattern) => {
+        responses.forEach(pattern => {
             const re = new RegExp(pattern);
             const match = re.exec(queue.data);
             if (match) {
@@ -120,8 +135,8 @@ class PrepaidPlugin {
                 const time = new Date(info.time);
                 info.time = time;
             }
-            catch (e) {
-                console.log(e.message);
+            catch (err) {
+                console.error(err.message);
             }
         }
         if (info.time instanceof Date) {
@@ -137,7 +152,7 @@ class PrepaidPlugin {
 
     fixDate(str) {
         let separator, parts;
-        ['.', '-', '/'].forEach((sep) => {
+        ['.', '-', '/'].forEach(sep => {
             if (str.indexOf(sep) >= 0) {
                 separator = sep;
                 return true;
@@ -164,40 +179,17 @@ class PrepaidPlugin {
     }
 
     monthIndex(month) {
+        let res = 0;
         if (month) {
-            switch (month.substr(0, 3).toLowerCase()) {
-                case 'jan':
-                    return 1;
-                case 'feb':
-                case 'peb':
-                    return 2;
-                case 'mar':
-                    return 3;
-                case 'apr':
-                    return 4;
-                case 'may':
-                case 'mei':
-                    return 5;
-                case 'jun':
-                    return 6;
-                case 'jul':
-                    return 7;
-                case 'agu':
-                case 'aug':
-                    return 8;
-                case 'sep':
-                    return 9;
-                case 'oct':
-                case 'okt':
-                    return 10;
-                case 'nop':
-                case 'nov':
-                    return 11;
-                case 'des':
-                case 'dec':
-                    return 12;
-            }
+            month.substr(0, 3).toLowerCase();
+            this.months.forEach((names, idx) => {
+                if (names.indexOf(month) >= 0) {
+                    res = idx + 1;
+                    return true;
+                }
+            });
         }
+        return res;
     }
 
     handle(queue) {
@@ -216,7 +208,7 @@ class PrepaidPlugin {
         if (req.method == 'GET') {
             let nr = 0;
             const items = [];
-            this.appterm.terminals.forEach((term) => {
+            this.appterm.terminals.forEach(term => {
                 const info = {
                     nr: ++nr,
                     name: term.name,
@@ -250,7 +242,6 @@ class PrepaidPlugin {
             res.json(result);
         }
     }
-
 }
 
 module.exports = PrepaidPlugin;
