@@ -7,7 +7,7 @@
         ]
     },
     "51010": {
-        "ussd": "*888*7#",
+        "ussd": "*888*6#",
         "response": "Sisa pulsa Rp\\.(?<BALANCE>\\d+)\\.Aktif sd (?<ACTIVE>[0-9/]+)"
     },
     "51011": {
