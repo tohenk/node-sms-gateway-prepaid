@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2022 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2023 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -181,7 +181,7 @@ class PrepaidPlugin {
     monthIndex(month) {
         let res = 0;
         if (month) {
-            month.substr(0, 3).toLowerCase();
+            month = month.substr(0, 3).toLowerCase();
             this.months.forEach((names, idx) => {
                 if (names.indexOf(month) >= 0) {
                     res = idx + 1;
@@ -196,7 +196,8 @@ class PrepaidPlugin {
         if (queue.type == this.ACTIVITY_CUSD) {
             const term = this.appterm.get(queue.imsi);
             if (term) {
-                const data = this.prepaid[term.info.network.code];
+                const data = this.prepaid[term.info.network.code] ? this.prepaid[term.info.network.code] :
+                    this.prepaid[queue.imsi.substr(0, 5)];
                 if (data && data.ussd == queue.address) {
                     this.parse(queue, data);
                 }
@@ -231,7 +232,8 @@ class PrepaidPlugin {
                 case 'check':
                     const term = this.appterm.get(req.body.imsi);
                     if (term) {
-                        const data = this.prepaid[term.info.network.code];
+                        const data = this.prepaid[term.info.network.code] ? this.prepaid[term.info.network.code] :
+                            this.prepaid[req.body.imsi.substr(0, 5)];
                         if (data) {
                             result.success = true;
                             term.addUssdQueue(data.ussd);
