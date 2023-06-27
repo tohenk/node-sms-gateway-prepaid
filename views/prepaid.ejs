@@ -30,20 +30,20 @@
   </table>
 </div>
 <% script.create('JQuery')
-  .useDependencies(['JQuery/Notification'])
+  .useDependencies(['SemanticUI/Notification'])
   .add(`
 $('tr[data-imsi] button').on('click', function(e) {
     e.preventDefault();
     $(this).prop('disabled', true);
-    var row = $(this).parents('tr');
-    var imsi = row.attr('data-imsi');
+    const row = $(this).parents('tr');
+    const imsi = row.attr('data-imsi');
     if (imsi) {
         $.post('/p/prepaid?cmd=check', {imsi: imsi})
-            .then(function(json) {
+            .done(function(json) {
                 if (json.success) {
-                    $.ntfy.notify('Prepaid update successfully queued.', 'success');
+                    $.notify('Prepaid update successfully queued.', 'success');
                 } else {
-                    $.ntfy.notify('Prepaid update not queued.', 'error');
+                    $.notify('Prepaid update not queued.', 'error');
                 }
             })
         ;
@@ -51,7 +51,7 @@ $('tr[data-imsi] button').on('click', function(e) {
 });
 if ($.uiCon && $.uiCon.socket) {
     $.uiCon.socket.on('prepaid', function(imsi, info) {
-        var row = $('tr[data-imsi="'+ imsi + '"]');
+        const row = $('tr[data-imsi="'+ imsi + '"]');
         if (row.length) {
             row.find(':nth-child(4)').text(info.balance ? info.balance : 'n/a');
             row.find(':nth-child(5)').text(info.active ? info.active : 'n/a');

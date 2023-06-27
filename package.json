@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/sms-gateway-prepaid",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "SMS Gateway Prepaid Plugin",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,6 @@
   "homepage": "https://github.com/tohenk/node-sms-gateway-prepaid#readme",
   "dependencies": {
     "format-number": "^3.0.0",
-    "moment": "^2.29.3"
+    "moment": "^2.29.4"
   }
 }
