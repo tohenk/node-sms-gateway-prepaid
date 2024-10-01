@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2018-2023 Toha <tohenk@yahoo.com>
+ * Copyright (c) 2018-2024 Toha <tohenk@yahoo.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -65,10 +65,13 @@ class PrepaidPlugin {
     }
 
     initialize() {
-        this.workdir = this.appterm.config.datadir ? path.join(this.appterm.config.datadir, 'prepaid') : path.join(__dirname, 'data');
+        this.workdir = this.appterm.config.datadir ? path.join(this.appterm.config.datadir, 'prepaid') :
+            path.join(__dirname, 'data');
         this.prepaidfile = path.join(__dirname, 'prepaid.json');
         this.datafile = path.join(this.workdir, 'prepaid.info');
-        if (!fs.existsSync(this.workdir)) fs.mkdirSync(this.workdir);
+        if (!fs.existsSync(this.workdir)) {
+            fs.mkdirSync(this.workdir);
+        }
         this.readPrepaidData();
         this.readData();
         this.watchPrepaidData();
@@ -76,7 +79,7 @@ class PrepaidPlugin {
 
     watchPrepaidData() {
         fs.watchFile(this.prepaidfile, (curr, prev) => {
-            if (curr.mtime != prev.mtime) {
+            if (curr.mtime !== prev.mtime) {
                 console.log('Prepaid data is changed, reloading');
                 this.readPrepaidData();
             }
@@ -101,12 +104,14 @@ class PrepaidPlugin {
 
     writeData() {
         fs.writeFile(this.datafile, JSON.stringify(this.data, null, 4), err => {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+            }
         });
     }
 
     parse(queue, data) {
-        const responses = typeof data.response == 'string' ? [data.response] : data.response;
+        const responses = typeof data.response === 'string' ? [data.response] : data.response;
         responses.forEach(pattern => {
             const re = new RegExp(pattern);
             const match = re.exec(queue.data);
@@ -119,7 +124,9 @@ class PrepaidPlugin {
                         active: match.groups.ACTIVE,
                         time: new Date()
                     }
-                    if (!this.data[queue.imsi]) this.data[queue.imsi] = {};
+                    if (!this.data[queue.imsi]) {
+                        this.data[queue.imsi] = {};
+                    }
                     Object.assign(this.data[queue.imsi], info);
                     this.writeData();
                     this.formatInfo(info);
@@ -130,7 +137,7 @@ class PrepaidPlugin {
     }
 
     formatInfo(info) {
-        if (typeof info.time == 'string') {
+        if (typeof info.time === 'string') {
             try {
                 const time = new Date(info.time);
                 info.time = time;
@@ -142,10 +149,10 @@ class PrepaidPlugin {
         if (info.time instanceof Date) {
             info.time = moment(info.time).format('DD MMM YYYY HH:mm');
         }
-        if (info.balance != undefined) {
+        if (info.balance !== undefined) {
             info.balance = formatNumber(parseFloat(info.balance));
         }
-        if (info.active != undefined) {
+        if (info.active !== undefined) {
             info.active = this.fixDate(info.active);
         }
     }
@@ -168,11 +175,11 @@ class PrepaidPlugin {
                 parts.splice(1, 0, match[0]);
             }
         }
-        if (parts && parts.length == 3) {
+        if (parts && parts.length === 3) {
             // assume D-M-Y
             const d = parseInt(parts[0]);
             const m = !isNaN(parts[1]) ? parseInt(parts[1]) : this.monthIndex(parts[1]);
-            const y = parseInt(parts[2].length == 2 ? (new Date()).getFullYear().toString().substr(0, 2) + parts[2] : parts[2]);
+            const y = parseInt(parts[2].length === 2 ? (new Date()).getFullYear().toString().substr(0, 2) + parts[2] : parts[2]);
             str = moment(new Date(y, m - 1, d)).format('DD MMM YYYY');
         }
         return str;
@@ -193,12 +200,12 @@ class PrepaidPlugin {
     }
 
     handle(queue) {
-        if (queue.type == this.ACTIVITY_CUSD) {
+        if (queue.type === this.ACTIVITY_CUSD) {
             const term = this.appterm.get(queue.imsi);
             if (term) {
                 const data = this.prepaid[term.info.network.code] ? this.prepaid[term.info.network.code] :
                     this.prepaid[queue.imsi.substr(0, 5)];
-                if (data && data.ussd == queue.address) {
+                if (data && data.ussd === queue.address) {
                     this.parse(queue, data);
                 }
             }
@@ -206,7 +213,7 @@ class PrepaidPlugin {
     }
 
     router(req, res, next) {
-        if (req.method == 'GET') {
+        if (req.method === 'GET') {
             let nr = 0;
             const items = [];
             this.appterm.terminals.forEach(term => {
@@ -226,7 +233,7 @@ class PrepaidPlugin {
             });
             res.render('prepaid', {items: items});
         }
-        if (req.method == 'POST') {
+        if (req.method === 'POST') {
             const result = {success: false}
             switch (req.query.cmd) {
                 case 'check':

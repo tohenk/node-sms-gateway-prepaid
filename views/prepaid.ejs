@@ -3,25 +3,25 @@
   <table class="ui selectable celled table">
     <thead>
       <tr>
-        <th>#</th>
-        <th>IMSI</th>
-        <th>Operator</th>
-        <th>Balance</th>
-        <th>Active</th>
-        <th>Time</th>
-        <th>Actions</th>
+        <th><%= _('#') %></th>
+        <th><%= _('IMSI') %></th>
+        <th><%= _('Operator') %></th>
+        <th><%= _('Balance') %></th>
+        <th><%= _('Active') %></th>
+        <th><%= _('Time') %></th>
+        <th><%= _('Actions') %></th>
       </tr>
     </thead>
-    <%_ if(items.length) { -%>
+    <%_ if (items.length) { -%>
     <tbody>
-    <%_ items.forEach((item) => { -%>
+    <%_ items.forEach(item => { -%>
       <tr data-imsi="<%= item.name %>">
         <td><%= item.nr %></td>
         <td><%= item.name %></td>
         <td><%= item.operator %></td>
-        <td class="right aligned"><%= item.balance ? item.balance : 'n/a' %></td>
-        <td><%= item.active ? item.active : 'n/a' %></td>
-        <td><%= item.time ? item.time : 'n/a' %></td>
+        <td class="right aligned"><%= item.balance ? item.balance : '${_('n/a')}' %></td>
+        <td><%= item.active ? item.active : '${_('n/a')}' %></td>
+        <td><%= item.time ? item.time : '${_('n/a')}' %></td>
         <td><button class="ui tiny icon button"><i class="sync alternate icon"></i></button></td>
       </tr>
       <%_ }) -%>
@@ -38,12 +38,12 @@ $('tr[data-imsi] button').on('click', function(e) {
     const row = $(this).parents('tr');
     const imsi = row.attr('data-imsi');
     if (imsi) {
-        $.post('/p/prepaid?cmd=check', {imsi: imsi})
+        $.post('${route('Plugin', {name: 'index', plugin: 'prepaid', cmd: 'check'})}', {imsi: imsi})
             .done(function(json) {
                 if (json.success) {
-                    $.notify('Prepaid update successfully queued.', 'success');
+                    $.notify('${_('Prepaid update successfully queued.')}', 'success');
                 } else {
-                    $.notify('Prepaid update not queued.', 'error');
+                    $.notify('${_('Prepaid update not queued.')}', 'error');
                 }
             })
         ;
@@ -53,9 +53,9 @@ if ($.uiCon && $.uiCon.socket) {
     $.uiCon.socket.on('prepaid', function(imsi, info) {
         const row = $('tr[data-imsi="'+ imsi + '"]');
         if (row.length) {
-            row.find(':nth-child(4)').text(info.balance ? info.balance : 'n/a');
-            row.find(':nth-child(5)').text(info.active ? info.active : 'n/a');
-            row.find(':nth-child(6)').text(info.time ? info.time : 'n/a');
+            row.find(':nth-child(4)').text(info.balance ? info.balance : '${_('n/a')}');
+            row.find(':nth-child(5)').text(info.active ? info.active : '${_('n/a')}');
+            row.find(':nth-child(6)').text(info.time ? info.time : '${_('n/a')}');
         }
     });
 }
