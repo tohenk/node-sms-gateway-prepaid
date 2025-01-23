@@ -1,6 +1,6 @@
 {
   "name": "@ntlab/sms-gateway-prepaid",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "SMS Gateway Prepaid Plugin",
   "main": "index.js",
   "scripts": {

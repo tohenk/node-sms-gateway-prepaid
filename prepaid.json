@@ -2,8 +2,7 @@
     "51001": {
         "ussd": "*888#",
         "response": [
-            "Pulsa Rp(?<BALANCE>\\d+)  s\\.d (?<ACTIVE>(\\d{2})\\-(\\d{2})\\-(\\d{4}))",
-            "Pulsa Rp (?<BALANCE>\\d+) s\\.d (?<ACTIVE>(\\d{2})\\-(\\d{2})\\-(\\d{4}))"
+            "Pulsa Rp(\\s+)?(?<BALANCE>\\d+)(\\s+)s\\.d(\\s+)(?<ACTIVE>(\\d{2})\\-(\\d{2})\\-(\\d{4}))"
         ]
     },
     "51010": {
@@ -18,7 +17,7 @@
         ]
     },
     "51089": {
-        "ussd": "*111*4#",
+        "ussd": "*888*8#",
         "response": "Pulsa\\:Rp(?<BALANCE>\\d+),Onnet\\:(\\d+) s/d (?<ACTIVE>(\\d{2})\\-([A-Z]{3})\\-(\\d{2}))"
     }
 }
